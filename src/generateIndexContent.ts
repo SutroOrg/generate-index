@@ -1,3 +1,10 @@
+const extensionMap: Record<string, string> = {
+  ts: "js",
+  tsx: "jsx",
+  mts: "mjs",
+  cts: "cjs",
+}
+
 export function generateIndexContent(
   files: string[],
   excludePatterns: string[] = [],
@@ -11,8 +18,8 @@ export function generateIndexContent(
   })
 
   const exportLines = exportedFiles.map((file) => {
-    const fileWithoutExtension = file.replace(/\.[^\.]+$/, "")
-    return `export * from "./${fileWithoutExtension}"\n`
+    const [name, ext] = file.split(".")
+    return `export * from "./${name}.${extensionMap[ext] ?? ext}"\n`
   })
 
   return exportLines.join("")
