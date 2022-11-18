@@ -1,3 +1,9 @@
-## 0.1.0
+# Change Log
 
-* Initial release
+All notable changes to the "generate-module-index" extension will be documented in this file.
+
+Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+
+## [Unreleased]
+
+- Initial release

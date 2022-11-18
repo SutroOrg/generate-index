@@ -1,12 +1,19 @@
-import * as fsExtra from "fs-extra"
-import { resolve } from "path"
-import { generateIndexContent } from "./generateIndexContent"
+import * as fs from "fs";
+import { promisify } from "util";
+import { resolve } from "path";
+import { generateIndexContent } from "./generateIndexContent";
 
-export async function writeIndexFile(targetFolder: string, fs = fsExtra) {
-  const files = await fs.readdir(targetFolder)
+const readdir = promisify(fs.readdir);
+const writeFile = promisify(fs.writeFile);
 
-  const indexFilePath = resolve(targetFolder, "index.ts")
-  const indexContent = generateIndexContent(files, [".test.", "__snapshots__"])
+export async function writeIndexFile(
+  targetFolder: string,
+  fsm = { readdir, writeFile },
+) {
+  const files = await fsm.readdir(targetFolder);
 
-  await fs.writeFile(indexFilePath, indexContent)
+  const indexFilePath = resolve(targetFolder, "index.ts");
+  const indexContent = generateIndexContent(files, [".test.", "__snapshots__"]);
+
+  await fsm.writeFile(indexFilePath, indexContent);
 }
